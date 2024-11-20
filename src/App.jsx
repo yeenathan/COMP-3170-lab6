@@ -6,7 +6,7 @@ function Countries({data}) {
     <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2rem"}}>
       {
         data ? data.map((country) => {
-          return <Country country={country} key={country.name.official}/>
+          return <Country country={country} key={country.name.officialgit}/>
         })
         :
         <h2>
