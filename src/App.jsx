@@ -1,15 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
-
-const ALL_COUNTRIES = await fetch("https://restcountries.com/v3.1/all").then(resp => resp.json());
 
 function Countries({data}) {
   return(
     <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2rem"}}>
       {
-        data.map((country) => {
-          return <Country country={country}/>
-        }) 
+        data ? data.map((country) => {
+          return <Country country={country} key={country.name.official}/>
+        })
+        :
+        <h2>
+          Loading...
+        </h2>
       }
     </div>
   )
@@ -41,9 +43,20 @@ function Country({country}) {
 }
 
 function App() {
+  useEffect(() => {
+    async function getCountries() {
+      const _data = await fetch("https://restcountries.com/v3.1/all").then(resp => resp.json());
+      setAllCountries(_data);
+      setData(_data);
+    }
+    getCountries();
+  }, [])
+
+  const [ALL_COUNTRIES, setAllCountries] = useState(null);
+
   const [continent, setContinent] = useState("All");
   const [subregion, setSubregion] = useState("All");
-  const [data, setData] = useState(ALL_COUNTRIES);
+  const [data, setData] = useState(null);
 
   const [isAlphabetical, setAlphabetical] = useState(false);
   const [population, setPopulation] = useState(false);
